@@ -1,7 +1,0 @@
-*.swp
-*.pbf
-node_modules
-*.osm
-*.log
-*.old
-data
