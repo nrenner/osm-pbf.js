@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>pbf-js example</title>
+  <script src="../pbf-browser.js"></script>
+  <script src="../protobuf.js"></script>
+  <script src="../pbf.js"></script>
+  <script src="../lib/zlib.js"></script>
+</head>
+<body>
+  <strong>node.pbf:</strong><br/>
+  <pre id="log"></pre>
+
+  <script>
+    (function () {
+        function handler(evt) { 
+            var buffer = this.response;
+            var blockFile = new Html5BlockFile(buffer);
+            var pbfFile = new PBFFile(blockFile);
+            pbfFile.nodes(function(node) {
+                    var msg = JSON.stringify(node, null, "  ");
+                    document.getElementById('log').innerText += msg;
+                }, function(){
+                    // TODO finish not called
+                    console.log('nodes finished');
+            });
+        }
+        
+        function get(url) {
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', url, true);
+            xhr.responseType = 'arraybuffer';
+            xhr.onload = handler;
+            xhr.send();
+        }
+        
+        get('node.pbf');
+    })();
+  </script>
+</body>
+</html>

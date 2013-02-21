@@ -1,3 +1,4 @@
+var protobuf = (function(){
 
 var WIRETYPE={'LENGTH':2,
               'VARINT':0};
@@ -14,11 +15,40 @@ function get_wire_type(val){
 function get_field_number(val){
   return val>>3;
 }
-function decode_signed(val){
+function decode_signed(val){ 
   //zigzag encoding
   if(val%2==0)
     return val/2;
   return -((val+1)/2);
+}
+/*
+Orig
+function decode_signed(val){
+  timer.start('decode_signed');
+  var ret = decode_signedOrig(val);
+  timer.stop('decode_signed');
+  return ret;
+}
+*/
+
+/*
+function readVarint( ary, offset ){
+  //timer.start('readVarint');
+
+  var i=offset;
+  var bytes = [strip_msb(ary[i])];
+  while( more_bytes(ary[i]) && i<ary.length-1 ){
+    i += 1;
+    bytes.push( strip_msb(ary[i]) );
+  }
+
+  var val = 0;
+  for(i=0; i<bytes.length; i++){
+    val += bytes[i]*Math.pow(2,(7*i));  //if you do a bit shift, unexpected negative numbers result sometimes
+  }
+
+  //timer.stop('readVarint');
+  return [val,i];
 }
 
 function readVarint( ary, offset ){
@@ -35,8 +65,29 @@ function readVarint( ary, offset ){
   }
   return [val,i];
 }
+*/
+function readVarint(ary, offset) {
+    var index = offset;
+    var val = strip_msb(ary[index]);
+    var i = 1;
+    while (more_bytes(ary[index]) && index < ary.length - 1) {
+        index += 1;
+        val += strip_msb(ary[index]) * Math.pow(2, (7 * i));
+        //val += strip_msb(ary[index]) << (7 * i);
+        i++;
+    }
+
+    return [ val, i ];
+}
+
+function readSignedVarint(ary, offset) {
+    var valdef = readVarint(ary, offset);
+    valdef[0] = decode_signed(valdef[0]); 
+    return valdef;
+}
 
 function readField(buf,offset){
+  //timer.start('readField');
   var nread=0;
 
   var fielddef = readVarint(buf,offset);
@@ -57,8 +108,21 @@ function readField(buf,offset){
     nread += valdef[1];
   }
 
+  //timer.stop('readField');
   return [field_number, val, nread];
 }
+
+/*
+function next(buf, signed) {
+    var valdef;
+    valdef = readVarint(buf, buf.index);
+    buf.index += valdef[1];
+    if (signed === true)
+        return decode_signed(valdef[0]);
+    else
+        return valdef[0];
+}
+*/
 
 function DenseData(buf){
   this.buf=buf;
@@ -66,6 +130,7 @@ function DenseData(buf){
   this.more = function(){
     return this.i<this.buf.length;
   }
+
   this.next = function(signed){
     var valdef;
     valdef = readVarint(this.buf,this.i);
@@ -75,10 +140,21 @@ function DenseData(buf){
     else
       return valdef[0];
   }
+
+/*
+  Orig
+  this.next =  function(signed){
+      timer.start('next');
+      var result = this.nextOrig(signed);
+      timer.stop('next');
+      return result;
+  }
+*/
 }
 
 
 function Message(buf){
+  //timer.start('Message');
   this.fields = {}
 
   var offset=0;
@@ -96,6 +172,7 @@ function Message(buf){
     offset += flen;
     
   }
+  //timer.stop('Message');
 
   this.val = function(tag){
     if(!this.hasField(tag))
@@ -112,6 +189,12 @@ function Message(buf){
   }
 }
 
+//return { decode_signed: decode_signed, Message: Message, DenseData: DenseData };
+// for profiling
+return { decode_signed: decode_signed, Message: Message, DenseData: DenseData, readVarint: readVarint, readSignedVarint: readSignedVarint };
+})();
+/*
 exports.decode_signed=decode_signed;
 exports.Message=Message;
 exports.DenseData=DenseData;
+*/
