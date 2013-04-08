@@ -108,7 +108,7 @@ function DenseNodes(message){
       onfinish();
       return; 
     }
-    debugger;
+    //debugger;
 
     var ids = new protobuf.DenseData( this.message.val(1) );
     var id = ids.next(true);
@@ -247,7 +247,7 @@ function PrimitiveBlock(message){
     //console.log( "primitiveblock has "+this.primitivegroups.length+" primitvegroups" );
 
     if(this.primitivegroups.length==2){
-      debugger;
+      //debugger;
     }
 
     var finished=0;
@@ -289,7 +289,7 @@ function PrimitiveBlock(message){
   }
 
   this.ways = function(onway,onfinish){
-    debugger
+    //debugger
 
     var finished=0;
     var metathis=this;
@@ -449,3 +449,4 @@ function PBFFile(fileblockfile){
 
 exports.FileBlockFile = FileBlockFile;
 exports.PBFFile = PBFFile;
+exports.Fileblock = Fileblock;
