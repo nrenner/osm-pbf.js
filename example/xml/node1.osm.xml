@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<osm version="0.6" generator="manual" copyright="OpenStreetMap and contributors" attribution="http://www.openstreetmap.org/copyright" license="http://opendatacommons.org/licenses/odbl/1-0/">
+  <node id="3123123123" version="1" changeset="23123123" lat="12.3456789" lon="1.2345678" user="testuser" uid="23123123" visible="true" timestamp="2013-04-03T12:34:56Z">
+    <tag k="name" v="test"/>
+    <tag k="note" v="üßé€"/>
+  </node>
+</osm>
