@@ -1,1 +1,1 @@
-browserify . -t ./browser/transforms.js -s pbf -o ./bundle.js
+browserify . -t ./browser/transforms.js -s pbf -o ./dist/osm-pbf.js
