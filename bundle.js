@@ -8,8 +8,8 @@ require('./buffer.js');
 require('./process.js');
 
 /**
-* buffer - ArrayBuffer
-*/
+ * buffer - ArrayBuffer
+ */
 function BufferBlockFile(buffer){
   this.read = function(onblock,onfinish){
     var offset=0;
@@ -685,14 +685,13 @@ exports.Fileblock = Fileblock;
 
 })(require("__browserify_process"))
 },{"./browser/fs.js":6,"./browser/zlib.js":7,"./protobuf.js":8,"__browserify_process":5}],6:[function(require,module,exports){
-//
 // minimal fs module browser shim for pbf.js
 //
 // pbf.js usages:
 //   fs.read(fd,buf, 0,4, this.fileoffset,function(err,bytesRead,buffer){
 //   fs.read(fd,headerbuf,0,metathis.headersize, metathis.fileoffset+4,function(err,bytesRead,buffer){
 //   fs.read(fd,blobbuf, 0,metathis.payloadsize,metathis.fileoffset+metathis.headersize+4,function(err,bytesRead,buffer){
-// node.js signature:
+// Node.js signature:
 //   fs.read = function(fd, buffer, offset, length, position, callback) {
 var read = function(arrayBuffer, viewBuffer, offset, length, position, callback) {
     //log('fs.read offset = ' + offset + ', length = ' + length + ', position ' + position);
