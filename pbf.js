@@ -114,10 +114,10 @@ function DenseNodes(message){
     var id = ids.next(true);
 
     var lats = new protobuf.DenseData( this.message.val(8) );
-    var lat = lats.next(true)/10000000;
+    var lat = lats.next(true);
 
     var lons = new protobuf.DenseData( this.message.val(9) );
-    var lon = lons.next(true)/10000000;
+    var lon = lons.next(true);
 
     if(this.message.hasField(10)){
       var keysvals = new DenseKeysVals( this.message.val(10) );
@@ -132,8 +132,8 @@ function DenseNodes(message){
       id = ids.next(true);
       console.log( id, ids );
     }
-   
-    var progress = onnode({id:id,lat:lat,lon:lon,keyval:keyval});
+
+    var progress = onnode({id:id,lat:lat/10000000,lon:lon/10000000,keyval:keyval});
     if( progress===false ){
       onfinish(false);
       return false;
@@ -143,8 +143,8 @@ function DenseNodes(message){
     while( ids.more() ) {
       did = ids.next(true);
       id = did+id;
-      lat = lats.next(true)/10000000+lat;
-      lon = lons.next(true)/10000000+lon;
+      lat = lats.next(true)+lat;
+      lon = lons.next(true)+lon;
       keyval = keysvals ? keysvals.next() : null;
 
       if( id < 0 ) {
@@ -158,7 +158,7 @@ function DenseNodes(message){
         console.log( id, ids );
       }
 
-      progress = onnode({id:id,lat:lat,lon:lon,keyval:keyval});
+      progress = onnode({id:id,lat:lat/10000000,lon:lon/10000000,keyval:keyval});
       if( progress===false ){
         onfinish(false);
         return false;
