@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>data snapshot example</title>
+  <script src="../dist/osm-pbf.js"></script>
+
+</head>
+<body>
+  <strong><span id="url"></span>:</strong><br/>
+  <pre id="log"></pre>
+
+  <script>
+    (function () {
+        function handle(buffer) {
+            var blockFile = new pbf.BufferBlockFile(buffer);
+            var pbffile = new pbf.PBFFile(blockFile);
+            pbffile.nodes( function(node) {
+                  var msg = JSON.stringify(node, null, "  ");
+                  document.getElementById('log').innerText += msg;
+                }, function(){
+                  // is not called when process.nextTick shim is synchronous
+                  console.log( "nodes finished" );
+            });
+        }
+        
+        function get(url) {
+            document.getElementById('url').innerHTML = url;
+            
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', url, true);
+            xhr.responseType = 'arraybuffer';
+            xhr.onload = function (evt) {
+                handle(this.response);
+            };
+            xhr.send();
+        }
+
+        get('data-snapshot.osm.pbf');
+    })();
+  </script>
+</body>
+</html>
