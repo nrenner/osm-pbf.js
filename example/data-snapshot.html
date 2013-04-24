@@ -7,20 +7,26 @@
 
 </head>
 <body>
-  <strong><span id="url"></span>:</strong><br/>
-  <pre id="log"></pre>
+  <strong><span id="url"></span></strong><br/>
+  <strong>nodes:</strong>
+  <pre id="nodes"></pre>
+  <strong>ways:</strong>
+  <pre id="ways"></pre>
 
   <script>
     (function () {
         function handle(buffer) {
             var blockFile = new pbf.BufferBlockFile(buffer);
-            var pbffile = new pbf.PBFFile(blockFile);
-            pbffile.nodes( function(node) {
-                  var msg = JSON.stringify(node, null, "  ");
-                  document.getElementById('log').innerText += msg;
+            var pbffile = new pbf.OnePassPBFFile(blockFile);
+            pbffile.read(function(node) {
+                    var msg = JSON.stringify(node, null, "  ");
+                    document.getElementById('nodes').innerText += msg;
+                }, function(way) {
+                    var msg = JSON.stringify(way, null, "  ");
+                    document.getElementById('ways').innerText += msg;
                 }, function(){
-                  // is not called when process.nextTick shim is synchronous
-                  console.log( "nodes finished" );
+                    // is not called when process.nextTick shim is synchronous
+                    console.log( "nodes finished" );
             });
         }
         
