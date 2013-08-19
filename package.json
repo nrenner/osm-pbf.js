@@ -2,7 +2,7 @@
     "name": "osm-pbf",
     "version": "0.1.0",
     "description": "OpenStreetMap PBF (Protocolbuffer Binary Format) format parser",
-    "main": "./browser/pbf-browser.js",
+    "browser": "./browser/pbf-browser.js",
     "dependencies": {
         "through": "~2.2.0"
     }
