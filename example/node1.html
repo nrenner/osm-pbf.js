@@ -17,7 +17,7 @@
             var pbffile = new pbf.PBFFile(blockFile);
             pbffile.nodes( function(node) {
                   var msg = JSON.stringify(node, null, "  ");
-                  document.getElementById('log').innerText += msg;
+                  document.getElementById('log').textContent += msg;
                 }, function(){
                   // is not called when process.nextTick shim is synchronous
                   console.log( "nodes finished" );

@@ -15,18 +15,21 @@
 
   <script>
     (function () {
+        function print(eleId, obj) {
+            var msg = JSON.stringify(obj); //, null, "  ");
+            document.getElementById(eleId).textContent += msg + '\n';
+        }
+        
         function handle(buffer) {
             var blockFile = new pbf.BufferBlockFile(buffer);
             var pbffile = new pbf.OnePassPBFFile(blockFile);
             pbffile.read(function(node) {
-                    var msg = JSON.stringify(node, null, "  ");
-                    document.getElementById('nodes').innerText += msg;
+                    print('nodes', node);
                 }, function(way) {
-                    var msg = JSON.stringify(way, null, "  ");
-                    document.getElementById('ways').innerText += msg;
+                    print('ways', way);
                 }, function(){
                     // is not called when process.nextTick shim is synchronous
-                    console.log( "nodes finished" );
+                    console.log( "finished" );
             });
         }
         
