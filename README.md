@@ -8,4 +8,6 @@ Currently does not support Relations and metadata.
 
 See Branch 'browser' for development on reading PBF in the Browser (evaluation / Proof of Concept).
 
-**see also:** [ProtoBuf.js](https://github.com/dcodeIO/ProtoBuf.js) + [osm-read](https://github.com/marook/osm-read) (might continue with that)
+## Status
+
+**ABANDONED** - switched to [osm-read](https://github.com/marook/osm-read)
